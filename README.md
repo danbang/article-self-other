@@ -1,6 +1,6 @@
 # article-self-other
 
-This repository contains anonymised behavioural and neural data and code supporting:
+This repository contains data and code supporting:
 
 <a href="https://www.biorxiv.org/content/10.1101/2021.03.05.434065v1">Bang, Moran, Daw & Fleming (2021) “Neurocomputational mechanisms of confidence in self and others” bioRxiv</a>
 
