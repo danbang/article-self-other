@@ -8,7 +8,7 @@ FigureX.m files will generate the requested plots and associated statistical ana
 
 The ‘Modelling’ folder contains computational models as implemented in Stan.
 
-Programming languages used are: MATLAB, [R] and Stan. Required toolboxes, packages etc. are specified within a script when relevant.
+Programming languages used are: MATLAB, [R] and Stan. Additional toolboxes, packages etc. are specified within a script when required.
 
 The paths in these scripts require altering the directory variable ‘repoBase’ to point to your local version of the repository.
 
