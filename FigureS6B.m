@@ -149,7 +149,7 @@ scatter((1:length(sbj_v))+.1,r_con_other,ms,ocol,'filled','MarkerFaceAlpha',.7);
 % Tidy up
 xlim([0 22]);
 ylim([0 1]); 
-set(gca,'XTick',1:21,'XTickLabel',{''});
+set(gca,'XTick',1:21,'XTickLabel',{'1','2','3','.','.','.','.','.','.','.','.','.','.','.','.','.','.','.','.','.','21'});
 set(gca,'YTick',0:.1:1);
 set(gca,'LineWidth',lw,'FontSize',axisFS);
 ylabel('\it{r}','FontSize',labelFS);
