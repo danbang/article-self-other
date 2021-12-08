@@ -88,7 +88,7 @@ for i_sbj = 1:length(sbj_v)
     nonansN = nonansN & data.self==0;
     roi_Zts = zscore(roi_ts(nonansN,:));
     acc     = data.acc(nonansN);
-    con     = sim.ppCo(nonansN);
+    con     = sim.ppCs(nonansN);
     pe      = zscore(acc-con);
     t= 0;
     for j= 1:size(roi_ts,2)
@@ -102,6 +102,9 @@ for i_sbj = 1:length(sbj_v)
 end
 
 end
+
+%% Load permutation statistics
+load('Permutation/Figure9.mat');
 
 %% -----------------------------------------------------------------------
 %% VISUALISATION
@@ -117,6 +120,19 @@ srate = .144; % sampling rate in seconds
 %% FIGURE: ENCODING COHERENCE
 % loop through ROIs
 for i_roi= 1:length(roi_v);
+    
+    % Permutation test
+    % data
+    pe= beta_ts{i_roi}.pe;
+    % t-tests
+    [H,P,CI,STATS]= ttest(pe);
+    tstat_pe= STATS.tstat;
+    % 95% bounds
+    tstat_permutation_LB_pe= quantile(permutation_beta_ts{i_roi}.pe,.025);
+    tstat_permutation_UB_pe= quantile(permutation_beta_ts{i_roi}.pe,.975);
+    % Compare to bounds
+    tstat_significant_pe= (tstat_pe<tstat_permutation_LB_pe)|(tstat_pe>tstat_permutation_UB_pe);
+    
     % create figure
     figz=figure('color',[1 1 1]);
     % add reference lines
@@ -124,18 +140,17 @@ for i_roi= 1:length(roi_v);
     plot([5/srate 5/srate],[-1 +1],'k-','LineWidth',lw/2); hold on
     plot([0 max_t],[0 0],'k-','LineWidth',lw); hold on
     % plot beta time series with significance overlaid
-    trace= beta_ts{i_roi}.pe;
-    fillsteplotcol(trace,lw,'-',kcol); hold on
-    p = ttest(trace); for i= 1:length(p); if p(i); plot(i,-.17,'s','Color',kcol,'MarkerFaceColor',kcol); hold on; end; end;
+    fillsteplotcol(pe,lw,'-',kcol); hold on
+    p = tstat_significant_pe; for i= 1:length(p); if p(i); plot(i,-.17,'s','Color',kcol,'MarkerFaceColor',kcol); hold on; end; end;
     % tidy up
     ylim([-.21 .21]);
     set(gca,'YTick',-.2:.1:.2);
-    xlim([1 max_t]);
+    xlim([1 84]);
     set(gca,'XTick',[1 14 28 42 56 70 84])
     set(gca,'XTickLabel',{'0','2','4','6','8','10','12'})
     box('off')
     set(gca,'FontSize',axisFS,'LineWidth',lw);
     xlabel('time [seconds]','FontSize',labelFS,'FontWeight','normal');
     ylabel('beta [a.u.]','FontSize',labelFS,'FontWeight','normal');
-    print('-djpeg','-r300',['Figures',fs,'Figure9_',roi_v{i_roi}]);
+    print('-djpeg','-r300',['Figures',fs,'Figure-9-',roi_v{i_roi}]);
 end

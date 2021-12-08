@@ -78,4 +78,4 @@ ylim([-0.6 +0.6]);
 set(gca,'YTick',-.6:.2:.6);
 xlim([0 length(roi_v)+1]);
 box('off')
-print('-djpeg','-r300',['Figures',fs,'Figure8B']);
+print('-djpeg','-r300',['Figures',fs,'Figure-8B']);

@@ -9,7 +9,7 @@
 %% PREPARATION
 
 % Fresh memory
-clear; close all;
+clear; %close all;
 
 % Paths [change 'repoBase' according to local setup]
 fs= filesep;
@@ -49,7 +49,9 @@ for i_sbj = 1:length(sbj_v)
         % include
         incl_dec = ~isnan(DATA(i_blk).typeI.response);
         incl_gam = DATA(i_blk).typeII.side>0;
-        include  = (incl_dec+incl_gam)==2;
+        incl_RT1 = ~isnan(DATA(i_blk).typeI.response_time);
+        incl_RT2 = ~isnan(DATA(i_blk).typeII.response_time);
+        include  = (incl_dec+incl_gam+incl_RT1+incl_RT2)==4;
         % load variables
         tmp.kskill = ones(1,sum(include)).*DATA(i_blk).trials.otherK;
         tmp.self = DATA(i_blk).trials.self(include);
@@ -290,7 +292,7 @@ set(gca,'YTick',0:.2:1);
 set(gca,'LineWidth',lw,'FontSize',axisFS);
 ylabel('P(gamble)','FontSize',labelFS);
 xlabel('coherence','FontSize',labelFS);
-print('-djpeg','-r300',['Figures/Figure2A']);
+print('-djpeg','-r300',['Figures/Figure-2A']);
 
 %% FIGURE: GAMBLE BY REWARD DIFFERENCE
 % Create figure
@@ -350,7 +352,7 @@ set(gca,'YTick',0:.2:1);
 set(gca,'LineWidth',lw,'FontSize',axisFS);
 ylabel('P(gamble)','FontSize',labelFS);
 xlabel('reward difference','FontSize',labelFS);
-print('-djpeg','-r300',['Figures/Figure2B']);
+print('-djpeg','-r300',['Figures/Figure-2B']);
 
 %% FIGURE: GAMBLE BY OTHERS' ABILITY
 % Create figure
@@ -410,7 +412,7 @@ set(gca,'YTick',0:.2:1);
 set(gca,'LineWidth',lw,'FontSize',axisFS);
 ylabel('P(gamble)','FontSize',labelFS);
 xlabel('others'' ability','FontSize',labelFS);
-print('-djpeg','-r300',['Figures/Figure2C']);
+print('-djpeg','-r300',['Figures/Figure-2C']);
 
 %% FIGURE: GAMBLE BY PREVIOUS CHOICE ACCURACY
 % Create figure
@@ -470,4 +472,4 @@ set(gca,'YTick',0:.2:1);
 set(gca,'LineWidth',lw,'FontSize',axisFS);
 ylabel('P(gamble)','FontSize',labelFS);
 xlabel('previous choice accuracy','FontSize',labelFS);
-print('-djpeg','-r300',['Figures/Figure2D']);
+print('-djpeg','-r300',['Figures/Figure-2D']);

@@ -91,6 +91,9 @@ end
 
 end
 
+%% Load permutation statistics
+load('Permutation/Figure6.mat');
+
 %% -----------------------------------------------------------------------
 %% VISUALISATION
 
@@ -106,6 +109,26 @@ srate = .144; % sampling rate in seconds
 %% FIGURE: ENCODING COHERENCE
 % loop through ROIs
 for i_roi= 1:length(roi_v);
+    
+    % Permutation test
+    % data
+    self= beta_ts{i_roi}.self;
+    other= beta_ts{i_roi}.other;
+    % t-tests
+    [H,P,CI,STATS]= ttest(self);
+    tstat_self= STATS.tstat;
+    [H,P,CI,STATS]= ttest(other);
+    tstat_other= STATS.tstat;
+    % 95% bounds
+    tstat_permutation_LB_self= quantile(permutation_beta_ts{i_roi}.self,.025);
+    tstat_permutation_UB_self= quantile(permutation_beta_ts{i_roi}.self,.975);
+    tstat_permutation_LB_other= quantile(permutation_beta_ts{i_roi}.self,.025);
+    tstat_permutation_UB_other= quantile(permutation_beta_ts{i_roi}.self,.975);
+    % Compare to bounds
+    tstat_significant_self= (tstat_self<tstat_permutation_LB_self)|(tstat_self>tstat_permutation_UB_self);
+    tstat_significant_other= (tstat_other<tstat_permutation_LB_other)|(tstat_other>tstat_permutation_UB_other);
+
+    % Plot figure
     % create figure
     figz=figure('color',[1 1 1]);
     % add reference lines
@@ -113,12 +136,10 @@ for i_roi= 1:length(roi_v);
     plot([2.5/srate 2.5/srate],[-1 +1],'k-','LineWidth',lw/2); hold on
     plot([0 max_t],[0 0],'k-','LineWidth',lw); hold on
     % plot beta time series with significance overlaid
-    self= beta_ts{i_roi}.self;
-    other= beta_ts{i_roi}.other;
     fillsteplotcol(self,lw,'-',scol); hold on
-    p = ttest(self); for i= 1:length(p); if p(i); plot(i,-.17,'s','Color',scol,'MarkerFaceColor',scol); hold on; end; end;
+    p = tstat_significant_self; for i= 1:length(p); if p(i); plot(i,-.17,'s','Color',scol,'MarkerFaceColor',scol); hold on; end; end;
     fillsteplotcol(other,lw,'-',ocol); hold on
-    p = ttest(other); for i= 1:length(p); if p(i); plot(i,-.18,'s','Color',ocol,'MarkerFaceColor',ocol); hold on; end; end;
+    p = tstat_significant_other; for i= 1:length(p); if p(i); plot(i,-.18,'s','Color',ocol,'MarkerFaceColor',ocol); hold on; end; end;
     % tidy up
     ylim([-.21 .21]);
     set(gca,'YTick',-.2:.1:.2);
@@ -129,5 +150,5 @@ for i_roi= 1:length(roi_v);
     set(gca,'FontSize',axisFS,'LineWidth',lw);
     xlabel('time [seconds]','FontSize',labelFS,'FontWeight','normal');
     ylabel('beta [a.u.]','FontSize',labelFS,'FontWeight','normal');
-    print('-djpeg','-r300',['Figures',fs,'Figure6_',roi_v{i_roi}]);
+    print('-djpeg','-r300',['Figures',fs,'Figure-6-',roi_v{i_roi}]);
 end

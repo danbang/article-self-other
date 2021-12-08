@@ -23,7 +23,7 @@ sbj_v= [22:27 29:32 34:42 44:45]; % subject numbers
 k= 0; for j= sbj_v; k= k+1; sbj_name{k}= ['mriData_sub_',num2str(j)]; end % subject names
 
 % Specify winning model for each family for overlaying onto behavioural data
-bestModels= {'S_B2T2P1','Q_B2T2P1','QS_B2T2P1','T_B2T2P1','TS_B2T1P1'};
+bestModels= {'S_B2T2P1','Q_B2T2P1_U','T_B2T2P1'};
 
 %% -----------------------------------------------------------------------
 %% ANALAYSIS
@@ -224,16 +224,14 @@ ocol2= [255 165 0]./295;
 dcol= [0 0 0];
 alphaz= .6;
 lw= 4;
-ms= 20;
+ms= 14;
 axisFS= 24;
 labelFS= 36;
 jitter=.5;
 modCols= [.6 .6 .6;
-          0 1 0;
-          0 1 1;
           1 0 0;
-          1 0 1];
-offsets= [-.3 -.15 0 .15 .3];
+          0 1 0];
+offsets= [-.3 0 .3];
 
 %% FIGURE: GAMBLE BY COHERENCE
 % Create figure
@@ -254,23 +252,23 @@ for i_mod= 1:length(bestModels);
     tmp= my_model.gamCohS;
     mu= mean(tmp);
     plot((1:2)+offsets(i_mod),mu,'-','Color',modCols(i_mod,:),'LineWidth',2); 
-    plot((1:2)+offsets(i_mod),mu,'ko','MarkerFaceColor',modCols(i_mod,:),'MarkerSize',8); 
+    plot((1:2)+offsets(i_mod),mu,'ko','MarkerFaceColor',modCols(i_mod,:),'MarkerSize',ms); 
     % Other
     base = 2;
     tmp= my_model.gamCohO;
     mu= mean(tmp);
     plot((1:2)+base+offsets(i_mod),mu,'-','Color',modCols(i_mod,:),'LineWidth',2); 
-    plot((1:2)+base+offsets(i_mod),mu,'ko','MarkerFaceColor',modCols(i_mod,:),'MarkerSize',8); 
+    plot((1:2)+base+offsets(i_mod),mu,'ko','MarkerFaceColor',modCols(i_mod,:),'MarkerSize',ms); 
 end
 % Tidy up
 xlim([0 5]);
-ylim([0 1]); 
+ylim([.3 .9]); 
 set(gca,'XTick',1:4,'XTickLabel',{'low','high'});
 set(gca,'YTick',0:.2:1);
 set(gca,'LineWidth',lw,'FontSize',axisFS);
 ylabel('P(gamble)','FontSize',labelFS);
 xlabel('coherence','FontSize',labelFS);
-print('-djpeg','-r300',['Figures/FigureS3A']);
+print('-djpeg','-r300',['Figures/Figure-S3A']);
 
 %% FIGURE: GAMBLE BY REWARD DIFFERENCE
 % Create figure
@@ -291,23 +289,23 @@ for i_mod= 1:length(bestModels);
     tmp= my_model.gamValS;
     mu= mean(tmp);
     plot((1:2)+offsets(i_mod),mu,'-','Color',modCols(i_mod,:),'LineWidth',2); 
-    plot((1:2)+offsets(i_mod),mu,'ko','MarkerFaceColor',modCols(i_mod,:),'MarkerSize',8); 
+    plot((1:2)+offsets(i_mod),mu,'ko','MarkerFaceColor',modCols(i_mod,:),'MarkerSize',ms); 
     % Other
     base = 2;
     tmp= my_model.gamValO;
     mu= mean(tmp);
     plot((1:2)+base+offsets(i_mod),mu,'-','Color',modCols(i_mod,:),'LineWidth',2); 
-    plot((1:2)+base+offsets(i_mod),mu,'ko','MarkerFaceColor',modCols(i_mod,:),'MarkerSize',8); 
+    plot((1:2)+base+offsets(i_mod),mu,'ko','MarkerFaceColor',modCols(i_mod,:),'MarkerSize',ms); 
 end
 % Tidy up
 xlim([0 5]);
-ylim([0 1]); 
+ylim([.3 .9]); 
 set(gca,'XTick',1:4,'XTickLabel',{'low','high'});
 set(gca,'YTick',0:.2:1);
 set(gca,'LineWidth',lw,'FontSize',axisFS);
 ylabel('P(gamble)','FontSize',labelFS);
 xlabel('reward difference','FontSize',labelFS);
-print('-djpeg','-r300',['Figures/FigureS3B']);
+print('-djpeg','-r300',['Figures/Figure-S3B']);
 
 %% FIGURE: GAMBLE BY OTHERS' ABILITY
 % Create figure
@@ -328,23 +326,23 @@ for i_mod= 1:length(bestModels);
     tmp= my_model.gamSklS;
     mu= mean(tmp);
     plot((1:3)+offsets(i_mod),mu,'-','Color',modCols(i_mod,:),'LineWidth',2); 
-    plot((1:3)+offsets(i_mod),mu,'ko','MarkerFaceColor',modCols(i_mod,:),'MarkerSize',8); 
+    plot((1:3)+offsets(i_mod),mu,'ko','MarkerFaceColor',modCols(i_mod,:),'MarkerSize',ms); 
     % Other
     base = 3;
     tmp= my_model.gamSklO;
     mu= mean(tmp);
     plot((1:3)+base+offsets(i_mod),mu,'-','Color',modCols(i_mod,:),'LineWidth',2); 
-    plot((1:3)+base+offsets(i_mod),mu,'ko','MarkerFaceColor',modCols(i_mod,:),'MarkerSize',8); 
+    plot((1:3)+base+offsets(i_mod),mu,'ko','MarkerFaceColor',modCols(i_mod,:),'MarkerSize',ms); 
 end
 % Tidy up
 xlim([0 7]);
-ylim([0 1]); 
+ylim([.3 .9]); 
 set(gca,'XTick',1:6,'XTickLabel',{'low','med.','high'});
 set(gca,'YTick',0:.2:1);
 set(gca,'LineWidth',lw,'FontSize',axisFS);
 ylabel('P(gamble)','FontSize',labelFS);
 xlabel('others'' ability','FontSize',labelFS);
-print('-djpeg','-r300',['Figures/FigureS3C']);
+print('-djpeg','-r300',['Figures/Figure-S3C']);
 
 %% FIGURE: GAMBLE BY PREVIOUS CHOICE ACCURACY
 % Create figure
@@ -365,20 +363,20 @@ for i_mod= 1:length(bestModels);
     tmp= my_model.gamAccS;
     mu= mean(tmp);
     plot((1:2)+offsets(i_mod),mu,'-','Color',modCols(i_mod,:),'LineWidth',2); 
-    plot((1:2)+offsets(i_mod),mu,'ko','MarkerFaceColor',modCols(i_mod,:),'MarkerSize',8); 
+    plot((1:2)+offsets(i_mod),mu,'ko','MarkerFaceColor',modCols(i_mod,:),'MarkerSize',ms); 
     % Other
     base = 2;
     tmp= my_model.gamAccO;
     mu= mean(tmp);
     plot((1:2)+base+offsets(i_mod),mu,'-','Color',modCols(i_mod,:),'LineWidth',2); 
-    plot((1:2)+base+offsets(i_mod),mu,'ko','MarkerFaceColor',modCols(i_mod,:),'MarkerSize',8); 
+    plot((1:2)+base+offsets(i_mod),mu,'ko','MarkerFaceColor',modCols(i_mod,:),'MarkerSize',ms); 
 end
 % Tidy up
 xlim([0 5]);
-ylim([0 1]); 
+ylim([.3 .9]);
 set(gca,'XTick',1:4,'XTickLabel',{'wrong','correct'});
 set(gca,'YTick',0:.2:1);
 set(gca,'LineWidth',lw,'FontSize',axisFS);
 ylabel('P(gamble)','FontSize',labelFS);
 xlabel('previous choice accuracy','FontSize',labelFS);
-print('-djpeg','-r300',['Figures/FigureS3D']);
+print('-djpeg','-r300',['Figures/Figure-S3D']);

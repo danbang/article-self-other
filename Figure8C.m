@@ -80,12 +80,12 @@ for i_sbj = 1:length(sbj_v)
         x= [psy' LIP(:,j) LIP(:,j).*psy'];
         y= TPJ(:,j);
         B= glmfit(x,y);
-        ppi{1}.psy(i_sbj,t)= B(end);  
+        ppi{1}.X(i_sbj,t)= B(end);  
         % LIP-dmPFC
         x= [psy' LIP(:,j) LIP(:,j).*psy'];
         y= dmPFC(:,j);
         B= glmfit(x,y);
-        ppi{2}.psy(i_sbj,t)= B(end);
+        ppi{2}.X(i_sbj,t)= B(end);
 %         % control for motion coherence
 %         % LIP-TPJ
 %         x= [cov' LIP(:,j).*cov' psy' LIP(:,j) LIP(:,j).*psy']; % control for motion coherence
@@ -101,6 +101,12 @@ for i_sbj = 1:length(sbj_v)
         
 end
 
+%% Load permutation statistics
+load('Permutation/Figure8C.mat');
+
+%% -----------------------------------------------------------------------
+%% VISUALISATION
+
 %% General specifications
 gcol= [0 1 0];
 mcol= [1 0 1];
@@ -111,30 +117,46 @@ max_t = 99; % index for max time
 srate = .144; % sampling rate in seconds
 
 %% FIGURE: PPI
+
+% Permutation test
+% data
+TPJ= ppi{1}.X;
+dmPFC= ppi{2}.X;
+% t-tests
+[H,P,CI,STATS]= ttest(TPJ);
+tstat_TPJ= STATS.tstat;
+[H,P,CI,STATS]= ttest(dmPFC);
+tstat_dmPFC= STATS.tstat;
+% 95% bounds
+tstat_permutation_LB_TPJ= quantile(permutation_ppi{1}.X,.025);
+tstat_permutation_UB_TPJ= quantile(permutation_ppi{1}.X,.975);
+tstat_permutation_LB_dmPFC= quantile(permutation_ppi{2}.X,.025);
+tstat_permutation_UB_dmPFC= quantile(permutation_ppi{2}.X,.975);
+% Compare to bounds
+tstat_significant_TPJ= (tstat_TPJ<tstat_permutation_LB_TPJ)|(tstat_TPJ>tstat_permutation_UB_TPJ);
+tstat_significant_dmPFC= (tstat_dmPFC<tstat_permutation_LB_dmPFC)|(tstat_dmPFC>tstat_permutation_UB_dmPFC);
+
 % create figure
 figz=figure('color',[1 1 1]);
 % add reference line
 plot([1/srate 1/srate],[-1 +1],'k-','LineWidth',lw/2); hold on
 plot([2.5/srate 2.5/srate],[-1 +1],'k-','LineWidth',lw/2); hold on
 plot([0 max_t],[0 0],'k-','LineWidth',lw); hold on
-% extract data
-TPJ= ppi{1}.psy;
-dmPFC= ppi{2}.psy;
 % plot beta time series with significance overlaid
 % TPJ
 fillsteplotcol(TPJ,lw,'-',mcol); hold on
-p = ttest(TPJ); for i= 1:length(p); if p(i); plot(i,-.19,'s','color',mcol,'MarkerFaceColor',mcol); hold on; end; end;
+p = tstat_significant_TPJ; for i= 1:length(p); if p(i); plot(i,-.19,'s','color',mcol,'MarkerFaceColor',mcol); hold on; end; end;
 % dmPFC
 fillsteplotcol(dmPFC,lw,'-',gcol); hold on
-p = ttest(dmPFC); for i= 1:length(p); if p(i); plot(i,-.21,'s','color',gcol,'MarkerFaceColor',gcol); hold on; end; end;
+p = tstat_significant_dmPFC; for i= 1:length(p); if p(i); plot(i,-.21,'s','color',gcol,'MarkerFaceColor',gcol); hold on; end; end;
 % tidy up
 ylim([-.25 .25]);
 set(gca,'YTick',-.2:.1:.2);
-xlim([1 max_t]);
-set(gca,'XTick',1:14:max_t-1)
+xlim([1 84]);
+set(gca,'XTick',[1 14 28 42 56 70 84])
 set(gca,'XTickLabel',{'0','2','4','6','8','10','12'})
 box('off')
 set(gca,'FontSize',axisFS,'LineWidth',lw);
 xlabel('time [seconds]','FontSize',labelFS,'FontWeight','normal');
 ylabel('beta [a.u.]','FontSize',labelFS,'FontWeight','normal');
-print('-djpeg','-r300',['Figures',fs,'Figure8C']);
+print('-djpeg','-r300',['Figures',fs,'Figure-8C']);

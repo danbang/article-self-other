@@ -20,25 +20,17 @@ dirFigures= [repoBase,fs,'Figures'];
 
 % Models
 modelz= {'S_B1T1P0','S_B1T2P0','S_B2T1P0','S_B2T2P0', ...
-         'S_B1T1P1','S_B1T2P1','S_B2T1P1','S_B2T2P1', ...
+         'S_B1T1P1','S_B1T2P1','S_B2T1P1','S_B2T2P1_U', ...
          'Q_B1T1P0','Q_B1T2P0','Q_B2T1P0','Q_B2T2P0', ...
-         'Q_B1T1P1','Q_B1T2P1','Q_B2T1P1','Q_B2T2P1', ...
-         'QS_B1T1P0','QS_B1T2P0','QS_B2T1P0','QS_B2T2P0', ...
-         'QS_B1T1P1','QS_B1T2P1','QS_B2T1P1','QS_B2T2P1', ...
+         'Q_B1T1P1','Q_B1T2P1','Q_B2T1P1','Q_B2T2P1_U', ...
          'T_B1T1P0','T_B1T2P0','T_B2T1P0','T_B2T2P0', ...
-         'T_B1T1P1','T_B1T2P1','T_B2T1P1','T_B2T2P1', ...
-         'TS_B1T1P0','TS_B1T2P0','TS_B2T1P0','TS_B2T2P0', ...
-         'TS_B1T1P1','TS_B1T2P1','TS_B2T1P1','TS_B2T2P1'};
+         'T_B1T1P1','T_B1T2P1','T_B2T1P1','T_B2T2P1_U'};
 modelNamez= {'S-B1T1P0','S-B1T2P0','S-B2T1P0','S-B2T2P0', ...
          'S-B1T1P1','S-B1T2P1','S-B2T1P1','S-B2T2P1', ...
          'Q-B1T1P0','Q-B1T2P0','Q-B2T1P0','Q-B2T2P0', ...
          'Q-B1T1P1','Q-B1T2P1','Q-B2T1P1','Q-B2T2P1', ...
-         'Q*-B1T1P0','Q*-B1T2P0','Q*-B2T1P0','Q*-B2T2P0', ...
-         'Q*-B1T1P1','Q*-B1T2P1','Q*-B2T1P1','Q*-B2T2P1', ...
          'T-B1T1P0','T-B1T2P0','T-B2T1P0','T-B2T2P0', ...
-         'T-B1T1P1','T-B1T2P1','T-B2T1P1','T-B2T2P1', ...
-         'T*-B1T1P0','T*-B1T2P0','T*-B2T1P0','T*-B2T2P0', ...
-         'T*-B1T1P1','T*-B1T2P1','T*-B2T1P1','T*-B2T2P1'};
+         'T-B1T1P1','T-B1T2P1','T-B2T1P1','T-B2T2P1'};
 method= 'vb';
 Nreruns= 4;
 
@@ -90,14 +82,14 @@ xlabel('WAIC');
 set(gca,'FontSize',12,'LineWidth',2);
 ylim([0 m+1]);
 box off;
-print('-djpeg','-r300',['Figures',fs,'FigureS2-barplot-waic']);
+print('-djpeg','-r300',['Figures',fs,'Figure-S2A-waic']);
 
 %% WAIC HEATMAP
 % Data
 my_data= metric_WAIC;
 % Create matrix for heatmap
 j=0;
-for c= 1:5;
+for c= 1:3;
     for r= 1:8
         j= j+1;
         map(r,c)= mean(my_data(j,:));
@@ -110,13 +102,13 @@ colormap('parula');
 imagesc(map);
 % Tidy up
 set(gca,'YTick',1:8,'YTickLabel',{'B1T1P0','B1T2P0','B2T1P0','B2T2P0','B1T1P1','B1T2P1','B2T1P1','B2T2P1'});
-set(gca,'XTick',[1:5],'XTickLabel',{'S','Q','Q*','T','T*'});
+set(gca,'XTick',[1:3],'XTickLabel',{'S','Q','T'});
 set(gca,'FontSize',24,'LineWidth',4);
 c=colorbar;
 set(c,'LineWidth',4);
-set(c,'YTick',[1 40],'YTickLabel',{'min','max'});
+set(c,'YTick',[1 24],'YTickLabel',{'min','max'});
 title('WAIC [rank-transformed]','FontWeight','normal');
-print('-djpeg','-r300',['Figures',fs,'FigureS2-heatmap-waic']);
+print('-djpeg','-r300',['Figures',fs,'Figure-S2B-waic']);
 
 %% WAIC BAR PLOT
 % data
@@ -140,14 +132,14 @@ xlabel('PSIS-LOO');
 set(gca,'FontSize',12,'LineWidth',2);
 ylim([0 m+1]);
 box off;
-print('-djpeg','-r300',['Figures',fs,'FigureS2-barplot-loo']);
+print('-djpeg','-r300',['Figures',fs,'Figure-S2A-loo']);
 
 %% WAIC HEATMAP
 % Data
 my_data= metric_LOO;
 % Create matrix for heatmap
 j=0;
-for c= 1:5;
+for c= 1:3;
     for r= 1:8
         j= j+1;
         map(r,c)= mean(my_data(j,:));
@@ -160,10 +152,10 @@ colormap('parula');
 imagesc(map);
 % Tidy up
 set(gca,'YTick',1:8,'YTickLabel',{'B1T1P0','B1T2P0','B2T1P0','B2T2P0','B1T1P1','B1T2P1','B2T1P1','B2T2P1'});
-set(gca,'XTick',[1:5],'XTickLabel',{'S','Q','Q*','T','T*'});
+set(gca,'XTick',[1:3],'XTickLabel',{'S','Q','T'});
 set(gca,'FontSize',24,'LineWidth',4);
 c=colorbar;
 set(c,'LineWidth',4);
-set(c,'YTick',[1 40],'YTickLabel',{'min','max'});
+set(c,'YTick',[1 24],'YTickLabel',{'min','max'});
 title('PSIS-LOO [rank-transformed]','FontWeight','normal');
-print('-djpeg','-r300',['Figures',fs,'FigureS2-heatmap-loo']);
+print('-djpeg','-r300',['Figures',fs,'Figure-S2B-loo']);
