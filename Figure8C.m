@@ -66,7 +66,7 @@ for i_sbj = 1:length(sbj_v)
     TPJ= zscore(TPJ_ts(idx,:));
     dmPFC= zscore(dmPFC_ts(idx,:));
     % task
-    soc= (data.self(idx)==0)-1.5;
+    soc= (data.self(idx)==0)-.5;
     coh= zscore(data.theta(idx));
     % psychological variable and covariates
     psy = soc;
@@ -101,8 +101,6 @@ for i_sbj = 1:length(sbj_v)
         
 end
 
-%% Load permutation statistics
-load('Permutation/Figure8C.mat');
 
 %% -----------------------------------------------------------------------
 %% VISUALISATION
@@ -117,25 +115,9 @@ max_t = 99; % index for max time
 srate = .144; % sampling rate in seconds
 
 %% FIGURE: PPI
-
-% Permutation test
 % data
 TPJ= ppi{1}.X;
 dmPFC= ppi{2}.X;
-% t-tests
-[H,P,CI,STATS]= ttest(TPJ);
-tstat_TPJ= STATS.tstat;
-[H,P,CI,STATS]= ttest(dmPFC);
-tstat_dmPFC= STATS.tstat;
-% 95% bounds
-tstat_permutation_LB_TPJ= quantile(permutation_ppi{1}.X,.025);
-tstat_permutation_UB_TPJ= quantile(permutation_ppi{1}.X,.975);
-tstat_permutation_LB_dmPFC= quantile(permutation_ppi{2}.X,.025);
-tstat_permutation_UB_dmPFC= quantile(permutation_ppi{2}.X,.975);
-% Compare to bounds
-tstat_significant_TPJ= (tstat_TPJ<tstat_permutation_LB_TPJ)|(tstat_TPJ>tstat_permutation_UB_TPJ);
-tstat_significant_dmPFC= (tstat_dmPFC<tstat_permutation_LB_dmPFC)|(tstat_dmPFC>tstat_permutation_UB_dmPFC);
-
 % create figure
 figz=figure('color',[1 1 1]);
 % add reference line
@@ -145,10 +127,8 @@ plot([0 max_t],[0 0],'k-','LineWidth',lw); hold on
 % plot beta time series with significance overlaid
 % TPJ
 fillsteplotcol(TPJ,lw,'-',mcol); hold on
-p = tstat_significant_TPJ; for i= 1:length(p); if p(i); plot(i,-.19,'s','color',mcol,'MarkerFaceColor',mcol); hold on; end; end;
 % dmPFC
 fillsteplotcol(dmPFC,lw,'-',gcol); hold on
-p = tstat_significant_dmPFC; for i= 1:length(p); if p(i); plot(i,-.21,'s','color',gcol,'MarkerFaceColor',gcol); hold on; end; end;
 % tidy up
 ylim([-.25 .25]);
 set(gca,'YTick',-.2:.1:.2);

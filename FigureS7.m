@@ -15,7 +15,7 @@ clear; close all;
 fs= filesep;
 repoBase= [getDropbox(1),fs,'Ego',fs,'Matlab',fs,'ucl',fs,'self_other',fs,'Repository'];
 dirDataBehaviour= [repoBase,fs,'Data',fs,'Behaviour',fs,'Scan',fs,'Task'];
-dirDataFMRI= [repoBase,fs,'Data',fs,'fMRI',fs,'ROI_SingleTrial'];
+dirDataFMRI= [repoBase,fs,'Data',fs,'fMRI',fs,'ROI_CanonHRF'];
 dirFigures= [repoBase,fs,'Figures'];
 
 % Add paths
@@ -26,7 +26,7 @@ roi_v= {'V5','LIP','TPJ','dmPFC'};
 cWindow= 'dec'; % time window (dec: decision; gam: gamble)
 
 % Load exclusions
-load([dirDataFMRI,fs,'singleTrial_exclusions_',cWindow,'.mat']);
+load([dirDataFMRI,fs,'exclusions_',cWindow,'.mat']);
 
 % Subjects
 sbj_v= [22:27 29:32 34:42 44:45]; % subject numbers
@@ -95,7 +95,7 @@ for i_sbj = 1:length(sbj_v)
     end
     
     % regression
-    x= [zscore(slfP); zscore(slfC); zscore(slfC).*zscore(slfP)]';
+    x= [zscore(slfC); zscore(slfP);zscore(slfC).*zscore(slfP)]';
     y= roiC';
     b= glmfit(x,y);
     betaz{i_roi}(k,:) = b(2:end);
