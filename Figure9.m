@@ -109,12 +109,8 @@ end
 % STATS
 
 [a b c d]= ttest(beta_HRF{1}.full(:,1));
-TPJ_spe= b
 
 [a b c d]= ttest(beta_HRF{2}.full(:,1));
-dmPFC_spe= b
-
-return
 
 %% -----------------------------------------------------------------------
 %% VISUALISATION
@@ -125,18 +121,13 @@ ocol= [255 165 0]./255;
 ccol= [0 1 1];
 gcol= [0 1 0];
 mcol= [1 0 1];
-axisFS= 28;
-labelFS= 40;
-lw= 4;
-max_t = 99; % index for max time
-srate = .144; % sampling rate in seconds
-
-%% General specifications
 kcol= [0 0 0];
 axisFS= 60;
 % labelFS= 44;
 alphaz= .5;
 lw= 8;
+jitter= 1;
+ms= 100;
 
 %% FIGURE
 % loop through ROIs
@@ -148,9 +139,14 @@ for i_roi= 1:length(roi_v);
     % plot data
     steplotmulticoloffalpha(spe,kcol,lw,1,alphaz);
     plot([0 2],[0 0],'k-','LineWidth',8);
+    % overlay subjects
+    % spe
+    y= spe;
+    x= violaPoints(1,spe,jitter);
+    scatter(x,y,ms,kcol,'filled','MarkerFaceAlpha',.5);
     % tidy up
-    ylim([-.16 .16]);
-    set(gca,'YTick',-.1:.1:.1);
+    ylim([-.6 .6]);
+    set(gca,'YTick',-.4:.4:.4);
     xlim([0 2]);
     h=gca;
     h.XAxis.Visible = 'off';
@@ -269,6 +265,6 @@ for i_roi= 1:length(roi_v);
     box('off')
     set(gca,'FontSize',axisFS,'LineWidth',lw);
     xlabel('time [seconds]','FontSize',labelFS,'FontWeight','normal');
-    ylabel('beta [a.u.]','FontSize',labelFS,'FontWeight','normal');
+    ylabel('beta [arb. units]','FontSize',labelFS,'FontWeight','normal');
     print('-djpeg','-r300',['Figures',fs,'Figure-9-time-',roi_v{i_roi}]);    
 end

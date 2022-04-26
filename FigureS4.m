@@ -227,7 +227,7 @@ ci95fillplotmulticolalpha(squeeze(sliding.simNoise(:,:,i_skill)),lw,'-',[0 1 0])
 ylim([0 .4]);
 set(gca,'YTick',0:.1:.4,'XTick',[3 8 13 18],'XTickLabel',{'5','10','15','20'})
 set(gca,'LineWidth',lw,'FontSize',axisFS);
-ylabel('other''s sensory noise','FontSize',labelFS);
+ylabel('others'' sensory noise','FontSize',labelFS);
 xlabel('trial','FontSize',labelFS);
 title('low ability','FontWeight','normal','FontSize',labelFS);
 subplot(1,3,2);
@@ -236,7 +236,7 @@ ci95fillplotmulticolalpha(squeeze(sliding.simNoise(:,:,i_skill)),lw,'-',[0 1 0])
 ylim([0 .4]);
 set(gca,'YTick',0:.1:.4,'XTick',[3 8 13 18],'XTickLabel',{'5','10','15','20'})
 set(gca,'LineWidth',lw,'FontSize',axisFS);
-ylabel('other''s sensory noise','FontSize',labelFS);
+ylabel('others'' sensory noise','FontSize',labelFS);
 xlabel('trial','FontSize',labelFS);
 title('medium ability','FontWeight','normal','FontSize',labelFS);
 subplot(1,3,3);
@@ -245,7 +245,7 @@ ci95fillplotmulticolalpha(squeeze(sliding.simNoise(:,:,i_skill)),lw,'-',[0 1 0])
 ylim([0 .4]);
 set(gca,'YTick',0:.1:.4,'XTick',[3 8 13 18],'XTickLabel',{'5','10','15','20'})
 set(gca,'LineWidth',lw,'FontSize',axisFS);
-ylabel('other''s sensory noise','FontSize',labelFS);
+ylabel('others'' sensory noise','FontSize',labelFS);
 xlabel('trial','FontSize',labelFS);
 title('high ability','FontWeight','normal','FontSize',labelFS);
 print('-djpeg','-r300',['Figures/Figure-S4B']);

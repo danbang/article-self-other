@@ -138,5 +138,5 @@ set(gca,'XTickLabel',{'0','2','4','6','8','10','12'})
 box('off')
 set(gca,'FontSize',axisFS,'LineWidth',lw);
 xlabel('time [seconds]','FontSize',labelFS,'FontWeight','normal');
-ylabel('beta [a.u.]','FontSize',labelFS,'FontWeight','normal');
+ylabel('beta [arb. units]','FontSize',labelFS,'FontWeight','normal');
 print('-djpeg','-r300',['Figures',fs,'Figure-8C']);

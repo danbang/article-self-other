@@ -249,7 +249,7 @@ ylim([-3.5 3.5]);
 set(gca,'XTick',1:7,'XTickLabel',{'T','C','R','A','TxC','TxR','TxA'});
 set(gca,'YTick',-3:3);
 set(gca,'LineWidth',lw,'FontSize',axisFS);
-ylabel('beta [a.u.]','FontSize',labelFS);
+ylabel('beta [arb. units]','FontSize',labelFS);
 xlabel('predictor','FontSize',labelFS);
 print('-djpeg','-r300',['Figures/FigureS1A']);
 
@@ -283,6 +283,6 @@ ylim([-3.5 3.5]);
 set(gca,'XTick',1:6,'XTickLabel',{'C','R','A'});
 set(gca,'YTick',-3:3);
 set(gca,'LineWidth',lw,'FontSize',axisFS);
-ylabel('beta [a.u.]','FontSize',labelFS);
+ylabel('beta [arb. units]','FontSize',labelFS);
 xlabel('predictor','FontSize',labelFS);
 print('-djpeg','-r300',['Figures/FigureS1B']);

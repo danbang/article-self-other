@@ -170,36 +170,44 @@ ocol= [255 165 0]./255;
 ccol= [0 1 1];
 gcol= [0 1 0];
 mcol= [1 0 1];
-axisFS= 28;
-labelFS= 40;
-lw= 4;
-max_t = 99; % index for max time
-srate = .144; % sampling rate in seconds
-
-%% General specifications
 kcol= [0 0 0];
 axisFS= 60;
 % labelFS= 44;
 alphaz= .5;
 lw= 8;
+jitter= 1;
+ms= 100;
 
 %% FIGURE
 % loop through ROIs
 for i_roi= 1:length(roi_v);
     % data
     soc= beta_HRF{i_roi}.full(:,1);
-    coh= beta_HRF{i_roi}.full(:,2);
+    con= beta_HRF{i_roi}.full(:,2);
     int= beta_HRF{i_roi}.full(:,3);   
     % create figure
     figz=figure('color',[1 1 1]);
     % plot data
     steplotmulticoloffalpha(soc,ccol,lw,1,alphaz);
-    steplotmulticoloffalpha(coh,mcol,lw,2,alphaz);
+    steplotmulticoloffalpha(con,mcol,lw,2,alphaz);
     steplotmulticoloffalpha(int,gcol,lw,3,alphaz);
     plot([0 4],[0 0],'k-','LineWidth',8);
+    % overlay subjects
+    % social
+    y= soc;
+    x= violaPoints(1,soc,jitter);
+    scatter(x,y,ms,kcol,'filled','MarkerFaceAlpha',.5);
+    % coherence
+    y= con;
+    x= violaPoints(2,con,jitter);
+    scatter(x,y,ms,kcol,'filled','MarkerFaceAlpha',.5);
+    % interaction
+    y= int;
+    x= violaPoints(3,int,jitter);
+    scatter(x,y,ms,kcol,'filled','MarkerFaceAlpha',.5);
     % tidy up
-    ylim([-.48 .48]);
-    set(gca,'YTick',-.4:.4:.4);
+    ylim([-1 1]);
+    set(gca,'YTick',-.8:.4:.8);
     xlim([0 4]);
     h=gca;
     h.XAxis.Visible = 'off';
@@ -220,9 +228,18 @@ for i_roi= 1:length(roi_v);
     steplotmulticoloffalpha(self,scol,lw,1,alphaz);
     steplotmulticoloffalpha(other,ocol,lw,2,alphaz);
     plot([0 3],[0 0],'k-','LineWidth',8);
+    % overlay subjects
+    % self
+    y= self;
+    x= violaPoints(1,self,jitter);
+    scatter(x,y,ms,kcol,'filled','MarkerFaceAlpha',.5);
+    % other
+    y= other;
+    x= violaPoints(2,other,jitter);
+    scatter(x,y,ms,kcol,'filled','MarkerFaceAlpha',.5);
     % tidy up
-    ylim([-.16 .16]);
-    set(gca,'YTick',-.1:.1:.1);
+    ylim([-.4 .4]);
+    set(gca,'YTick',-.3:.3:.3);
     xlim([0 3]);
     h=gca;
     h.XAxis.Visible = 'off';
@@ -386,7 +403,7 @@ for i_roi= 1:length(roi_v);
     box('off')
     set(gca,'FontSize',axisFS,'LineWidth',lw);
     xlabel('time [seconds]','FontSize',labelFS,'FontWeight','normal');
-    ylabel('beta [a.u.]','FontSize',labelFS,'FontWeight','normal');
+    ylabel('beta [arb. units]','FontSize',labelFS,'FontWeight','normal');
     print('-djpeg','-r300',['Figures',fs,'Figure-7A-time-',roi_v{i_roi}]);    
 end
 
@@ -414,6 +431,6 @@ for i_roi= 1:length(roi_v);
     box('off')
     set(gca,'FontSize',axisFS,'LineWidth',lw);
     xlabel('time [seconds]','FontSize',labelFS,'FontWeight','normal');
-    ylabel('beta [a.u.]','FontSize',labelFS,'FontWeight','normal');
+    ylabel('beta [arb. units]','FontSize',labelFS,'FontWeight','normal');
     print('-djpeg','-r300',['Figures',fs,'Figure-7B-time-',roi_v{i_roi}]);  
 end
