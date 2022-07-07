@@ -155,6 +155,11 @@ for i_roi= 1:length(roi_v);
     print('-djpeg','-r300',['Figures',fs,'Figure-9-HRF-',roi_v{i_roi}]);
 end
 
+% write .csv source data file
+csvheaders= {'TPJ','dmPFC'};
+csvdata= [beta_HRF{1}.full(:,1) beta_HRF{2}.full(:,1)];
+csvwrite_with_headers('SourceData/Figure9',csvdata,csvheaders);
+
 %% -----------------------------------------------------------------------
 %% TIME COURSE
 

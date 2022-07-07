@@ -286,3 +286,9 @@ set(gca,'LineWidth',lw,'FontSize',axisFS);
 ylabel('beta [arb. units]','FontSize',labelFS);
 xlabel('predictor','FontSize',labelFS);
 print('-djpeg','-r300',['Figures/FigureS1B']);
+
+% write .csv source data file
+csvheaders= {'panel_a_T','panel_a_C','panel_a_R','panel_a_A','panel_a_TxC','panel_a_TxR','panel_a_TxA' ...
+             'panel_b_self_C','panel_b_self_R','panel_b_self_A','panel_b_other_C','panel_b_other_R','panel_b_other_A'};
+csvdata= [betaSO betaS betaO];
+csvwrite_with_headers('SourceData/FigureS1',csvdata,csvheaders);

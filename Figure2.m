@@ -124,8 +124,8 @@ for i_sbj = 1:length(sbj_v)
     %% GAMBLE: AGGREGATE
     
     % Gamble: others' ability
-    for kk= 1:3; S_gamble_skill(i_sbj,kk) = nanmean(data.gamble(data.self==1&data.kskill==kk)); end
-    for kk= 1:3; O_gamble_skill(i_sbj,kk) = nanmean(data.gamble(data.self==0&data.kskill==kk)); end
+    for kk= 1:3; gamSklS(i_sbj,kk) = nanmean(data.gamble(data.self==1&data.kskill==kk)); end
+    for kk= 1:3; gamSklO(i_sbj,kk) = nanmean(data.gamble(data.self==0&data.kskill==kk)); end
 
     % Gamble: overall
     gamMean(i_sbj,:) = [nanmean(data.gamble(data.self==1)) nanmean(data.gamble(data.self==0))];
@@ -362,20 +362,20 @@ hold on;
 plot([0 7],[0 0],'k-','LineWidth',lw);
 % Group mean and 95% CI
 % Self
-ci95plotmulticoloffalpha(S_gamble_skill,repmat(scol,3,1),lw,1,alphaz);
+ci95plotmulticoloffalpha(gamSklS,repmat(scol,3,1),lw,1,alphaz);
 % Other
-ci95plotmulticoloffalpha(O_gamble_skill,repmat(ocol,3,1),lw,4,alphaz);
+ci95plotmulticoloffalpha(gamSklO,repmat(ocol,3,1),lw,4,alphaz);
 % Overlay subjects
 % Self
 for i=1:3;
-    y= S_gamble_skill(:,i);
-    x= violaPoints(i,S_gamble_skill(:,i),jitter);
+    y= gamSklS(:,i);
+    x= violaPoints(i,gamSklS(:,i),jitter);
     scatter(x,y,ms,dcol,'filled','MarkerFaceAlpha',.5);
 end
 % Other
 for i=1:3;
-    y= O_gamble_skill(:,i);
-    x= violaPoints(i+3,O_gamble_skill(:,i),jitter);
+    y= gamSklO(:,i);
+    x= violaPoints(i+3,gamSklO(:,i),jitter);
     scatter(x,y,ms,dcol,'filled','MarkerFaceAlpha',.5);
 end
 % Add model mean and 95% CI
@@ -473,3 +473,11 @@ set(gca,'LineWidth',lw,'FontSize',axisFS);
 ylabel('P(gamble)','FontSize',labelFS);
 xlabel('previous choice accuracy','FontSize',labelFS);
 print('-djpeg','-r300',['Figures/Figure-2D']);
+
+% write .csv source data file
+csvheaders= {'panel_a_self_low','panel_a_self_high','panel_a_other_low','panel_a_other_high', ...
+             'panel_b_self_low','panel_b_self_high','panel_b_other_low','panel_b_other_high', ...
+             'panel_c_self_low','panel_c_self_medium','panel_c_self_high','panel_b_other_low','panel_c_other_medium','panel_b_other_high', ...
+             'panel_d_self_low','panel_d_self_high','panel_d_other_low','panel_d_other_high'};
+csvdata= [gamCohS gamCohO gamValS gamValO gamSklS gamSklO gamAccS gamAccO];
+csvwrite_with_headers('SourceData/Figure2',csvdata,csvheaders);

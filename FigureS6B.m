@@ -156,3 +156,8 @@ ylabel('\it{r}','FontSize',labelFS);
 xlabel('subject','FontSize',labelFS);
 box on;
 print('-djpeg','-r300',['Figures/Figure-S6B']);
+
+% write .csv source data file
+csvheaders= {'panel_b_self','panel_b_other'};
+csvdata= [r_con_self r_con_other];
+csvwrite_with_headers('SourceData/FigureS6',csvdata,csvheaders);

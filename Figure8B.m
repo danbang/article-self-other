@@ -79,3 +79,8 @@ set(gca,'YTick',-.6:.2:.6);
 xlim([0 length(roi_v)+1]);
 box('off')
 print('-djpeg','-r300',['Figures',fs,'Figure-8B']);
+
+% write .csv source data file
+csvheaders= {'panel_b_TPJ','panel_b_dmPFC'};
+csvdata= [ppi(:,1) ppi(:,2)];
+csvwrite_with_headers('SourceData/Figure8',csvdata,csvheaders);
