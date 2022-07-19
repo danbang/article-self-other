@@ -2,7 +2,7 @@
 
 This repository contains data and code supporting:
 
-<a href="https://www.biorxiv.org/content/10.1101/2021.03.05.434065v1">Bang, Moran, Daw & Fleming (2021) “Neurocomputational mechanisms of confidence in self and others” bioRxiv</a>
+<a href="https://www.biorxiv.org/content/10.1101/2021.03.05.434065v1">Bang, Moran, Daw & Fleming (2022) “Neurocomputational mechanisms of confidence in self and others” Nature Communications</a>
 
 FigureX.m files will generate the requested plots and associated statistical analyses.
 
